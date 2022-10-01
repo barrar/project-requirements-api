@@ -1,8 +1,4 @@
-Update: Please run these commands to use the new pm2 config   
-```
-pm2 delete all   
-pm2 start pm2.json 
-```
+This is an API for managing project features. Internal and external user groups allow for collaboration and access control. Feature descriptions can have questions, user stories, requirements and test cases attached.
 
 ## Schema
 
