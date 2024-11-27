@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project Requirements Search</title>
+
+    <style>
+      body{
+        margin: 30px;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      #message {
+        margin: 30px auto;
+      }
+      .type{
+        color:rgb(38, 78, 165);
+        font-weight: bold;
+      }
+      li{
+        list-style: none;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Project Requirements Search</h2>
+
+    <input onkeyup="submit()" type="text" id="search">
+    <button onclick="submit()" id="search_btn">Search</button>
+
+    <div id="message">
+      <i>Search results will appear here!</i>
+    </div>
+
+    <ul id="response"></ul>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+
+  <script>
+    const socket = io('http://localhost:8000')
+
+    function submit() {
+      const messageElem = document.getElementById('message');
+      const buttonElem = document.getElementById('search_btn');
+      const queryElem = document.getElementById('search');
+
+      const query = queryElem.value;
+
+      buttonElem.disabled = true;
+
+      socket.emit('search', query, (response) => {
+        const responseElem = document.getElementById('response');
+
+        buttonElem.disabled = false;
+
+        if (response.length > 0) {
+          messageElem.innerHTML = `<i>Search results for "${query}":</i>`;
+          responseElem.innerHTML = response.map(i => {
+            if (i.entity === 'feature') {
+              return `<li><span class="type">(${i.entity})</span> ${i.title}: ${i.description}</li>`
+            }
+
+            if (i.entity === 'question') {
+              return `<li><span class="type">(${i.entity})</span> ${i.question}</li>`
+            }
+
+            if (i.entity === 'definition') {
+              return `<li><span class="type">(${i.entity})</span> ${i.name}: ${i.description}</li>`
+            }
+          }).join('\n');
+        } else {
+          messageElem.innerHTML = `<i>No search results for "${query}"</i>`;
+          responseElem.innerHTML = '';
+        }
+      });
+    }
+  </script>
+</html>

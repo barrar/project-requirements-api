@@ -1,0 +1,27 @@
+{
+  "name": "final_proj",
+  "script": "server.js",
+  "log_file": "combined.log",
+  "autorestart": false,
+  "watch": "./",
+  "watch_delay": 100,
+  "max_restarts": 30,
+  "restart_delay": 3000,
+  "ignore_watch": ["node_modules", "combined.log", ".git"],
+  "max_memory_restart": "900M",
+  "env": {
+    "NODE_ENV": "development",
+    "MYSQL_ROOT_PASSWORD": "asdfg",
+    "MYSQL_USER": "app",
+    "MYSQL_PASSWORD": "pass",
+    "MYSQL_HOSTNAME": "localhost",
+    "MYSQL_PORT": "3306",
+    "MYSQL_DATABASE": "final_proj",
+    "REDIS_HOST": "localhost",
+    "REDIS_PORT": "6379",
+    "PORT": "8000"
+  },
+  "env_production" : {
+    "NODE_ENV": "production"
+  }
+}
